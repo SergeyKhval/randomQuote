@@ -1,11 +1,12 @@
 export class MainController {
-  constructor(WikiQuote) {
+  constructor($log, WikiQuote) {
     'ngInject';
 
+    this.$log = $log;
     this.WikiQuote = WikiQuote;
 
-    this.WikiQuote.openSearch('Washington').then(function(result){
-      console.log(result);
+    this.WikiQuote.openSearch('Washington').then(result => {
+      this.$log.log(result);
     })
   }
 }
