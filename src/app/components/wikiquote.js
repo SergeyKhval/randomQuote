@@ -6,8 +6,8 @@ export class WikiQuote {
     this.apiHost = "http://en.wikiquote.org/w/api.php";
   }
 
-  queryTitles(titles, success, error) {
-    this.$http({
+  queryTitles(titles) {
+    return this.$http({
       method: 'JSONP',
       url: this.apiHost,
       data: {
@@ -28,14 +28,14 @@ export class WikiQuote {
         }
       }
       if (pageId > 0) {
-        success(pageId);
+        return pageId;
       } else {
-        error("No results");
+        return error("No results");
       }
     }).catch(function () {
       error("Error processing your query");
     })
-  };
+  }
 
   getSectionsForPage(pageId, success, error) {
     this.$http({
@@ -64,10 +64,10 @@ export class WikiQuote {
         titles: result.parse.title,
         sections: sectionArray
       });
-    }).catch(function(){
+    }).catch(function () {
       error("Error getting sections");
     });
-  };
+  }
 
   getQuotesForSection(pageId, sectionIndex, success, error) {
     this.$http({
@@ -105,9 +105,9 @@ export class WikiQuote {
     }).catch(function () {
       error("Error getting quotes");
     })
-  };
+  }
 
-  getRandomQuote(titles, success, error) {
+  getRandomQuote(titles) {
 
     var errorFunction = function (msg) {
       error(msg);
@@ -133,6 +133,24 @@ export class WikiQuote {
     };
 
     this.queryTitles(titles, getSections, errorFunction);
-  };
+  }
 
+  openSearch(titles) {
+    return $http({
+      url: this.apiHost,
+      method: 'JSONP',
+      data: {
+        format: "json",
+        action: "opensearch",
+        namespace: 0,
+        suggest: "",
+        search: titles
+      }
+    }).then(function (response) {
+      return response[1];
+    }).catch(function () {
+      error("Error with opensearch for " + titles);
+    });
+  }
 }
+
