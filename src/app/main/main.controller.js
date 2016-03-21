@@ -5,8 +5,13 @@ export class MainController {
     this.$log = $log;
     this.WikiQuote = WikiQuote;
 
-    this.WikiQuote.openSearch('Washington').then(result => {
-      this.$log.log(result);
+    this.result = null;
+  }
+
+  searchWiki(title){
+    this.WikiQuote.openSearch(title).then( response => {
+      this.$log.log(response.data);
+      this.result = response.data[1];
     })
   }
 }

@@ -7,12 +7,12 @@ export class WikiQuote {
     this.apiHost = "http://en.wikiquote.org/w/api.php";
   }
 
-  openSearch() {
+  openSearch(title) {
     var config = {
       params: {
         action: "opensearch",
         format: "json",
-        search: 'Te',
+        search: title,
         callback: "JSON_CALLBACK"
       }
     };
@@ -24,4 +24,3 @@ export class WikiQuote {
     })
   }
 }
-
